@@ -5,61 +5,34 @@
 
 const char* date = __DATE__;
 
-const char* mon[] =
-{
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec"
-};
-
-const char mond[] =
-{
-	31,
-	28,
-	31,
-	30,
-	31,
-	30,
-	31,
-	31,
-	30,
-	31,
-	30,
-	31
-};
+char *mon[12] =
+{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+char mond[12] =
+{ 31,    28,    31,    30,    31,    30,    31,    31,    30,    31,    30,    31 };
 
 int build_number()
 {
-	int month = 0, month_days = 0;
-	for (; month < 11; month++)
-	{
-		if (!strncmp(date, mon[month], 3))
-			break;
+	int m = 0;
+	int d = 0;
+	int y = 0;
+	int build = 0;
 
-		month_days += mond[month];
+	for (m = 0; m < 11; m++)
+	{
+		if (strnicmp(&date[0], mon[m], 3) == 0)
+			break;
+		d += mond[m];
 	}
 
-	int days = month_days + atoi(date + 4) - 1;
-	int year = atoi(date + 7);
-	int year_diff = year - (1900 + 1);
+	d += atoi(&date[4]) - 1;
 
-	int build = days - (year_diff * -365);
-	build += year_diff / 4;
+	y = atoi(&date[7]) - 1900;
 
-	// Leap years
-	if (!(year & 3) && month > 1)
-		build++;
+	build = d + (int)((y - 1) * 365.25);
 
-	build -= RELEASE_DAY;
+	if (((y % 4) == 0) && m > 1)
+		build += 1;
 
+	build -= RELEASE_DAY; 
 	return build;
 }
