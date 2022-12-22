@@ -16,6 +16,11 @@ int build_number()
 	int d = 0;
 	int y = 0;
 	int build = 0;
+	
+	static int b = 0;
+
+	if (b != 0)
+		return b;
 
 	for (m = 0; m < 11; m++)
 	{
