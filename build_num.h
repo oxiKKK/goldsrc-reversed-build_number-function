@@ -12,11 +12,9 @@ char mond[12] =
 
 int build_number()
 {
-	int m = 0;
+	int m = 0; 
 	int d = 0;
 	int y = 0;
-	int build = 0;
-	
 	static int b = 0;
 
 	if (b != 0)
@@ -24,20 +22,23 @@ int build_number()
 
 	for (m = 0; m < 11; m++)
 	{
-		if (strnicmp(&date[0], mon[m], 3) == 0)
+		if (strnicmp( &date[0], mon[m], 3 ) == 0)
 			break;
 		d += mond[m];
 	}
 
-	d += atoi(&date[4]) - 1;
+	d += atoi( &date[4] ) - 1;
 
-	y = atoi(&date[7]) - 1900;
+	y = atoi( &date[7] ) - 1900;
 
-	build = d + (int)((y - 1) * 365.25);
+	b = d + (int)((y - 1) * 365.25);
 
 	if (((y % 4) == 0) && m > 1)
-		build += 1;
+	{
+		b += 1;
+	}
 
-	build -= RELEASE_DAY; 
-	return build;
+	b -= RELEASE_DAY; // Oct 24 1996
+
+	return b;
 }
