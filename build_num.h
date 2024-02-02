@@ -1,16 +1,17 @@
-#include <iostream>
-#include <windows.h>
+#include <stdlib.h>
+#include <string.h>
+#ifndef _WIN32
+#define strnicmp strncasecmp // POSIX
+#endif
 
 #define RELEASE_DAY 34995 // Possibly Thursday, October 24, 1996
 
-const char* date = __DATE__;
-
-char *mon[12] =
+const char *mon[12] =
 { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-char mond[12] =
+const char mond[12] =
 { 31,    28,    31,    30,    31,    30,    31,    31,    30,    31,    30,    31 };
 
-int build_number()
+static inline int build_number_(const char *date)
 {
 	int m = 0; 
 	int d = 0;
@@ -41,4 +42,9 @@ int build_number()
 	b -= RELEASE_DAY; // Oct 24 1996
 
 	return b;
+}
+
+static inline int build_number(void)
+{
+	return build_number_(__DATE__);
 }
